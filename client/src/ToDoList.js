@@ -14,13 +14,10 @@ class ToDoList extends Component {
       id: 1,
       items: []
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  async componentDidMount() {
-    await axios.get(endpoint + "/api/task").then(res => {
+  componentDidMount() {
+    axios.get(endpoint + "/api/task").then(res => {
       console.log(res);
       this.setState({
         list: res.data.map(task => ({
@@ -39,35 +36,32 @@ class ToDoList extends Component {
     });
   }
 
-  onChange(event) {
+  onChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
+  };
 
-    this.getTask();
-  }
-
-  async onSubmit() {
-    if (this.state.id.toString() && this.state.task) {
-      console.log("herer");
-
-      await axios
+  onSubmit = () => {
+    let { task, id } = this.state;
+    if (task) {
+      axios
         .post(endpoint + "/api/createTask", {
-          id: "78",
-          task: this.state.task
+          id,
+          task
         })
         .then(res => {
+          id += 1;
+          this.setState({ id }, () => {
+            this.getTask();
+          });
           console.log(res);
         });
-
-      this.setState({ id: this.state.id + 1 });
-    } else {
-      console.log("empty");
     }
-  }
+  };
 
-  async getTask() {
-    await axios.get(endpoint + "/api/task").then(res => {
+  getTask = () => {
+    axios.get(endpoint + "/api/task").then(res => {
       this.setState({
         items: res.data.map(item => {
           let card = {
@@ -78,7 +72,7 @@ class ToDoList extends Component {
         })
       });
     });
-  }
+  };
 
   render() {
     return (
