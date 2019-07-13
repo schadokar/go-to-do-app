@@ -80,29 +80,30 @@ func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func findTasks() []models.ToDoList {
+func findTasks() []primitive.M {
 	collection := getCollection()
 	cur, err := collection.Find(context.Background(), bson.D{{}})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var tasks []models.ToDoList
-	var task models.ToDoList
-
+	// var tasks []models.ToDoList
+	// var task models.ToDoList
+	var results []primitive.M
 	for cur.Next(context.Background()) {
 		var result bson.M
 		e := cur.Decode(&result)
 		if e != nil {
 			log.Fatal(e)
 		}
-		fmt.Println("cur..>", cur, "result", result, reflect.TypeOf(result["_id"]))
-		err := cur.Decode(&task)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(task)
-		tasks = append(tasks, task)
+		fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
+		results = append(results, result)
+		// err := cur.Decode(&task)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// fmt.Println(task)
+		// tasks = append(tasks, task)
 	}
 
 	if err := cur.Err(); err != nil {
@@ -110,7 +111,7 @@ func findTasks() []models.ToDoList {
 	}
 
 	cur.Close(context.Background())
-	return tasks
+	return results
 }
 
 func insertTask(task models.ToDoList) {

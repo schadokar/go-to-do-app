@@ -10,26 +10,12 @@ class ToDoList extends Component {
 
     this.state = {
       task: "",
-      id: 0,
       items: []
     };
   }
 
   componentDidMount() {
-    axios.get(endpoint + "/api/task").then(res => {
-      console.log(res);
-      if (res.data)
-        this.setState({
-          id: res.data.length,
-          items: res.data.map(item => {
-            let card = {
-              header: item.task,
-              fluid: true
-            };
-            return card;
-          })
-        });
-    });
+    this.getTask();
   }
 
   onChange = event => {
@@ -39,14 +25,13 @@ class ToDoList extends Component {
   };
 
   onSubmit = () => {
-    let { task, id } = this.state;
+    let { task } = this.state;
     // console.log("pRINTING task", this.state.task);
     if (task) {
       axios
         .post(
           endpoint + "/api/createTask",
           {
-            id: this.state.id.toString(),
             task
           },
           {
@@ -56,10 +41,8 @@ class ToDoList extends Component {
           }
         )
         .then(res => {
-          id += 1;
-          this.setState({ id }, () => {
-            this.getTask();
-          });
+          this.getTask();
+
           console.log(res);
         });
     }
@@ -67,9 +50,11 @@ class ToDoList extends Component {
 
   getTask = () => {
     axios.get(endpoint + "/api/task").then(res => {
+      console.log(res);
       this.setState({
         items: res.data.map(item => {
           let card = {
+            key: item._id,
             header: item.task,
             fluid: true
           };
