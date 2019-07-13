@@ -9,9 +9,8 @@ class ToDoList extends Component {
     super(props);
 
     this.state = {
-      list: [],
       task: "",
-      id: 1,
+      id: 0,
       items: []
     };
   }
@@ -19,20 +18,17 @@ class ToDoList extends Component {
   componentDidMount() {
     axios.get(endpoint + "/api/task").then(res => {
       console.log(res);
-      this.setState({
-        list: res.data.map(task => ({
-          id: task.id,
-          task: task.task
-        })),
-        id: res.data.length,
-        items: res.data.map(item => {
-          let card = {
-            header: item.task,
-            fluid: true
-          };
-          return card;
-        })
-      });
+      if (res.data)
+        this.setState({
+          id: res.data.length,
+          items: res.data.map(item => {
+            let card = {
+              header: item.task,
+              fluid: true
+            };
+            return card;
+          })
+        });
     });
   }
 
@@ -44,12 +40,21 @@ class ToDoList extends Component {
 
   onSubmit = () => {
     let { task, id } = this.state;
+    // console.log("pRINTING task", this.state.task);
     if (task) {
       axios
-        .post(endpoint + "/api/createTask", {
-          id,
-          task
-        })
+        .post(
+          endpoint + "/api/createTask",
+          {
+            id: this.state.id.toString(),
+            task
+          },
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            }
+          }
+        )
         .then(res => {
           id += 1;
           this.setState({ id }, () => {

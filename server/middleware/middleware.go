@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
 
 	"../models"
-
 	"github.com/gorilla/mux"
+
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -41,16 +43,16 @@ func getCollection() *mongo.Collection {
 }
 
 func GetTasks(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Context-Type", "application/json")
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	payload := findTasks()
 	json.NewEncoder(w).Encode(payload)
 }
 
 func CreateTask(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Context-Type", "application/json")
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	var task models.ToDoList
 	_ = json.NewDecoder(r.Body).Decode(&task)
@@ -60,21 +62,21 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Context-Type", "application/json")
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	params := mux.Vars(r)
+	delete(params["id"])
+	json.NewEncoder(w).Encode(params["id"])
+	// json.NewEncoder(w).Encode("Task not found")
 
-	payload := findTasks()
+}
 
-	for _, p := range payload {
-		if p.ID == params["id"] {
-			delete(p)
-			json.NewEncoder(w).Encode(p)
-			return
-		}
-	}
-
-	json.NewEncoder(w).Encode("Task not found")
+func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	count := deleteAll()
+	json.NewEncoder(w).Encode(count)
+	// json.NewEncoder(w).Encode("Task not found")
 
 }
 
@@ -89,6 +91,12 @@ func findTasks() []models.ToDoList {
 	var task models.ToDoList
 
 	for cur.Next(context.Background()) {
+		var result bson.M
+		e := cur.Decode(&result)
+		if e != nil {
+			log.Fatal(e)
+		}
+		fmt.Println("cur..>", cur, "result", result, reflect.TypeOf(result["_id"]))
 		err := cur.Decode(&task)
 		if err != nil {
 			log.Fatal(err)
@@ -107,18 +115,36 @@ func findTasks() []models.ToDoList {
 
 func insertTask(task models.ToDoList) {
 	collection := getCollection()
-	_, err := collection.InsertOne(context.Background(), task)
+	insertResult, err := collection.InsertOne(context.Background(), task)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Println("Inserted a Single Record ", insertResult.InsertedID)
 }
 
-func delete(task models.ToDoList) {
+func delete(task string) {
 	collection := getCollection()
-
-	_, err := collection.DeleteOne(context.Background(), task, nil)
+	fmt.Println(task)
+	id, _ := primitive.ObjectIDFromHex(task)
+	filter := bson.M{"_id": id}
+	d, err := collection.DeleteOne(context.Background(), filter)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Println("Deleted Document", d.DeletedCount)
+}
+
+func deleteAll() int64 {
+	collection := getCollection()
+
+	d, err := collection.DeleteMany(context.Background(), bson.D{{}}, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Deleted Document", d.DeletedCount)
+	return d.DeletedCount
 }
