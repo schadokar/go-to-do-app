@@ -51,19 +51,27 @@ class ToDoList extends Component {
   getTask = () => {
     axios.get(endpoint + "/api/task").then(res => {
       console.log(res);
-      this.setState({
-        items: res.data.map(item => {
-          let card = {
-            key: item._id,
-            header: item.task,
-            fluid: true
-          };
-          return card;
-        })
-      });
+      if (res.data)
+        this.setState({
+          items: res.data.map(item => {
+            return (
+              <Card
+                header={item.task}
+                key={item._id}
+                fluid
+                onClick={() => this.deleteTask(item._id)}
+              />
+            );
+          })
+        });
     });
   };
 
+  deleteTask = id => {
+    axios.delete(endpoint + "/api/task/" + id).then(res => {
+      console.log(res);
+    });
+  };
   render() {
     return (
       <div>
@@ -86,7 +94,7 @@ class ToDoList extends Component {
           </Form>
         </div>
         <div className="row">
-          <Card.Group items={this.state.items} />
+          <Card.Group>{this.state.items}</Card.Group>
         </div>
       </div>
     );

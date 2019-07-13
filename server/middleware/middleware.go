@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"reflect"
 
 	"../models"
 	"github.com/gorilla/mux"
@@ -64,6 +63,8 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	params := mux.Vars(r)
 	delete(params["id"])
 	json.NewEncoder(w).Encode(params["id"])
@@ -87,8 +88,6 @@ func findTasks() []primitive.M {
 		log.Fatal(err)
 	}
 
-	// var tasks []models.ToDoList
-	// var task models.ToDoList
 	var results []primitive.M
 	for cur.Next(context.Background()) {
 		var result bson.M
@@ -96,14 +95,9 @@ func findTasks() []primitive.M {
 		if e != nil {
 			log.Fatal(e)
 		}
-		fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
+		// fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
 		results = append(results, result)
-		// err := cur.Decode(&task)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		// fmt.Println(task)
-		// tasks = append(tasks, task)
+
 	}
 
 	if err := cur.Err(); err != nil {
