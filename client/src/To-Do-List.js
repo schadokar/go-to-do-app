@@ -71,16 +71,19 @@ class ToDoList extends Component {
                       color="green"
                       onClick={() => this.updateTask(item._id)}
                     />
+                    <span style={{ paddingRight: 10 }}>Done</span>
                     <Icon
                       name="undo"
                       color="yellow"
                       onClick={() => this.undoTask(item._id)}
                     />
+                    <span style={{ paddingRight: 10 }}>Undo</span>
                     <Icon
                       name="delete"
                       color="red"
                       onClick={() => this.deleteTask(item._id)}
                     />
+                    <span style={{ paddingRight: 10 }}>Delete</span>
                   </Card.Meta>
                 </Card.Content>
               </Card>
