@@ -16,10 +16,21 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func getCollection() *mongo.Collection {
+// DB connection string
+const CONNECTIONSTR = "mongodb://localhost:27017"
+
+// Database Name
+const DBNAME = "test"
+
+// Collection name
+const COLLNAME = "todolist"
+
+var collection *mongo.Collection
+
+func init() {
 
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI(CONNECTIONSTR)
 
 	// connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
@@ -37,8 +48,9 @@ func getCollection() *mongo.Collection {
 
 	fmt.Println("Connected to MongoDB!")
 
-	collection := client.Database("test").Collection("todolist")
-	return collection
+	collection = client.Database(DBNAME).Collection(COLLNAME)
+
+	fmt.Println("Collection instance created!")
 }
 
 func GetTasks(w http.ResponseWriter, r *http.Request) {
@@ -55,7 +67,7 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	var task models.ToDoList
 	_ = json.NewDecoder(r.Body).Decode(&task)
-	fmt.Println(task, r.Body)
+	// fmt.Println(task, r.Body)
 	insertTask(task)
 	json.NewEncoder(w).Encode(task)
 }
@@ -82,7 +94,6 @@ func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func findTasks() []primitive.M {
-	collection := getCollection()
 	cur, err := collection.Find(context.Background(), bson.D{{}})
 	if err != nil {
 		log.Fatal(err)
@@ -109,7 +120,6 @@ func findTasks() []primitive.M {
 }
 
 func insertTask(task models.ToDoList) {
-	collection := getCollection()
 	insertResult, err := collection.InsertOne(context.Background(), task)
 
 	if err != nil {
@@ -120,7 +130,6 @@ func insertTask(task models.ToDoList) {
 }
 
 func delete(task string) {
-	collection := getCollection()
 	fmt.Println(task)
 	id, _ := primitive.ObjectIDFromHex(task)
 	filter := bson.M{"_id": id}
@@ -133,8 +142,6 @@ func delete(task string) {
 }
 
 func deleteAll() int64 {
-	collection := getCollection()
-
 	d, err := collection.DeleteMany(context.Background(), bson.D{{}}, nil)
 	if err != nil {
 		log.Fatal(err)
