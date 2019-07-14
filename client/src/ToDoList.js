@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Button, Card, Header, Form, Input } from "semantic-ui-react";
+import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
 
 let endpoint = "http://localhost:8080";
 
@@ -30,7 +30,7 @@ class ToDoList extends Component {
     if (task) {
       axios
         .post(
-          endpoint + "/api/createTask",
+          endpoint + "/api/task",
           {
             task
           },
@@ -56,15 +56,32 @@ class ToDoList extends Component {
       if (res.data) {
         this.setState({
           items: res.data.map(item => {
+            let color = "yellow";
+
+            if (item.status) {
+              color = "green";
+            }
             return (
-              <Card
-                key={item._id}
-                onClick={() => this.deleteTask(item._id)}
-                color="green"
-                fluid
-              >
+              <Card key={item._id} color={color} fluid>
                 <Card.Content>
                   <Card.Header textAlign="left">{item.task}</Card.Header>
+                  <Card.Meta textAlign="right">
+                    <Icon
+                      name="check circle"
+                      color="green"
+                      onClick={() => this.updateTask(item._id)}
+                    />
+                    <Icon
+                      name="undo"
+                      color="yellow"
+                      onClick={() => this.undoTask(item._id)}
+                    />
+                    <Icon
+                      name="delete"
+                      color="red"
+                      onClick={() => this.deleteTask(item._id)}
+                    />
+                  </Card.Meta>
                 </Card.Content>
               </Card>
             );
@@ -78,11 +95,43 @@ class ToDoList extends Component {
     });
   };
 
+  updateTask = id => {
+    axios
+      .put(endpoint + "/api/task/" + id, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.getTask();
+      });
+  };
+
+  undoTask = id => {
+    axios
+      .put(endpoint + "/api/undoTask/" + id, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.getTask();
+      });
+  };
+
   deleteTask = id => {
-    axios.delete(endpoint + "/api/task/" + id).then(res => {
-      console.log(res);
-      this.getTask();
-    });
+    axios
+      .delete(endpoint + "/api/deleteTask/" + id, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.getTask();
+      });
   };
   render() {
     return (
