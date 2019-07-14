@@ -1,6 +1,9 @@
 # go-to-do-app
 
-This is a to-do list application. It's server is created in Golang, db is mongodb and client is in React.
+This is a to-do list application.  
+**Server: Golang  
+Client: React, semantic-ui-react  
+Database: Local MongoDB**
 
 # Application Requirement
 
@@ -21,8 +24,8 @@ From the Application directory
 1. Make sure your mongoDB is started
 2. From server directory, open a terminal and run
    `go run main.go`
-3. From client directory,
-   a. install all the dependencies using `npm install`
+3. From client directory,  
+   a. install all the dependencies using `npm install`  
    b. start client `npm start`
 
 # Walk through the application
@@ -31,19 +34,19 @@ Open application at http://localhost:3000
 
 ### Index page
 
-![](images\index.PNG)
+![](https://github.com/schadokar/go-to-do-app/blob/master/images/index.PNG)
 
 ### Create task
 
 Enter a task and Enter
 
-![](images\createTask.PNG)
+![](https://github.com/schadokar/go-to-do-app/blob/master/images/createTask.PNG)
 
 ### Task Complete
 
 On completion of a task, click "done" Icon of the respective task card.
 
-![](images\taskComplete.PNG)
+![](https://github.com/schadokar/go-to-do-app/blob/master/images/taskComplete.PNG)
 
 You'll notice on completion of task, card's bottom line color changed from yellow to green.
 
@@ -51,7 +54,7 @@ You'll notice on completion of task, card's bottom line color changed from yello
 
 To undone a task, click on "undo" Icon,
 
-![](images\createTask.PNG)
+![](https://github.com/schadokar/go-to-do-app/blob/master/images/createTask.PNG)
 
 You'll notice on completion of task, card's bottom line color changed from green to yellow.
 
@@ -59,10 +62,10 @@ You'll notice on completion of task, card's bottom line color changed from green
 
 To delete a task, click on "delete" Icon.
 
-![](images\deletetask.PNG)
+![](https://github.com/schadokar/go-to-do-app/blob/master/images/deletetask.PNG)
 
 # References
 
-https://godoc.org/go.mongodb.org/mongo-driver/mongo
-https://www.mongodb.com/blog/post/mongodb-go-driver-tutorial
-https://vkt.sh/go-mongodb-driver-cookbook/
+https://godoc.org/go.mongodb.org/mongo-driver/mongo  
+https://www.mongodb.com/blog/post/mongodb-go-driver-tutorial  
+https://vkt.sh/go-mongodb-driver-cookbook/  
