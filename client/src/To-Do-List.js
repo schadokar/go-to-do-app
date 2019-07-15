@@ -64,7 +64,10 @@ class ToDoList extends Component {
             return (
               <Card key={item._id} color={color} fluid>
                 <Card.Content>
-                  <Card.Header textAlign="left">{item.task}</Card.Header>
+                  <Card.Header textAlign="left">
+                    <div style={{ wordWrap: "break-word" }}>{item.task}</div>
+                  </Card.Header>
+
                   <Card.Meta textAlign="right">
                     <Icon
                       name="check circle"
