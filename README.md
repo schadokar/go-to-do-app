@@ -1,6 +1,9 @@
 # go-to-do-app
 
+##### Note: Checkout its offline version at http://getshitdone.surge.sh . To check the source code, switch to offlineToDoApp branch.  
+
 This is a to-do list application.  
+
 **Server: Golang  
 Client: React, semantic-ui-react  
 Database: Local MongoDB**
