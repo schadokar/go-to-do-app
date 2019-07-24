@@ -16,14 +16,14 @@ From client directory, you have 2 options either install the complete applicatio
 
 #### build
 
-a. install a server if you don't have one. `npm install -g serve`
-b. serve build
-c. Open application at http://localhost:5000
+a. install a server if you don't have one. `npm install -g serve`  
+b. serve build  
+c. Open application at http://localhost:5000  
 
 #### client
 
 a. install all the dependencies using `npm install`  
- b. start client `npm start`
+b. start client `npm start`  
 c. Open application at http://localhost:3000
 
 # Walk through the application
