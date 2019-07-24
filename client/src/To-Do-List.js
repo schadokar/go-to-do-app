@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
-
-let endpoint = "http://localhost:8080";
 
 class ToDoList extends Component {
   constructor(props) {
@@ -14,9 +11,9 @@ class ToDoList extends Component {
     };
   }
 
-  componentDidMount() {
-    this.getTask();
-  }
+  componentDidMount = () => {
+    this.getTasks();
+  };
 
   onChange = event => {
     this.setState({
@@ -25,127 +22,130 @@ class ToDoList extends Component {
   };
 
   onSubmit = () => {
-    let { task } = this.state;
-    // console.log("pRINTING task", this.state.task);
-    if (task) {
-      axios
-        .post(
-          endpoint + "/api/task",
-          {
-            task
-          },
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
+    let items = JSON.parse(localStorage.getItem("items"));
+    if (items == null) {
+      items = [];
+    }
+    let item = {
+      task: this.state.task,
+      status: false
+    };
+    items.push(item);
+    localStorage.setItem("items", JSON.stringify(items));
+
+    // clear the form
+    this.setState({ task: "" });
+    this.getTasks();
+  };
+
+  getTasks = () => {
+    let items = JSON.parse(localStorage.getItem("items"));
+    if (items) {
+      items = items.sort((a, b) => {
+        if (a.status) {
+          return 1;
+        } else if (b.status) {
+          return -1;
+        }
+        return 0;
+      });
+      // console.log(n, items);
+      localStorage.setItem("items", JSON.stringify(items));
+
+      this.setState({
+        items: items.map((item, index) => {
+          let color = "yellow";
+          let cardBackground = { background: "white" };
+          let taskComplete = { textDecoration: "none" };
+          if (item.status) {
+            color = "green";
+            cardBackground.background = "beige";
+            taskComplete["textDecoration"] = "line-through";
           }
-        )
-        .then(res => {
-          this.getTask();
-          this.setState({
-            task: ""
-          });
-          console.log(res);
-        });
+          return (
+            <Card key={index} color={color} fluid style={cardBackground}>
+              <Card.Content>
+                <Card.Header textAlign="left" style={taskComplete}>
+                  <div style={{ wordWrap: "break-word" }}>{item.task}</div>
+                </Card.Header>
+
+                <Card.Meta textAlign="right">
+                  <Icon
+                    link
+                    name="check circle"
+                    color="green"
+                    onClick={() => this.updateTask(index)}
+                  />
+                  <span style={{ paddingRight: 10 }}>Done</span>
+                  <Icon
+                    link
+                    name="undo"
+                    color="yellow"
+                    onClick={() => this.undoTask(index)}
+                  />
+                  <span style={{ paddingRight: 10 }}>Undo</span>
+                  <Icon
+                    link
+                    name="delete"
+                    color="red"
+                    onClick={() => this.deleteTask(index)}
+                  />
+                  <span style={{ paddingRight: 10 }}>Delete</span>
+                </Card.Meta>
+              </Card.Content>
+            </Card>
+          );
+        })
+      });
     }
   };
 
-  getTask = () => {
-    axios.get(endpoint + "/api/task").then(res => {
-      console.log(res);
-      if (res.data) {
-        this.setState({
-          items: res.data.map(item => {
-            let color = "yellow";
-
-            if (item.status) {
-              color = "green";
-            }
-            return (
-              <Card key={item._id} color={color} fluid>
-                <Card.Content>
-                  <Card.Header textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.task}</div>
-                  </Card.Header>
-
-                  <Card.Meta textAlign="right">
-                    <Icon
-                      name="check circle"
-                      color="green"
-                      onClick={() => this.updateTask(item._id)}
-                    />
-                    <span style={{ paddingRight: 10 }}>Done</span>
-                    <Icon
-                      name="undo"
-                      color="yellow"
-                      onClick={() => this.undoTask(item._id)}
-                    />
-                    <span style={{ paddingRight: 10 }}>Undo</span>
-                    <Icon
-                      name="delete"
-                      color="red"
-                      onClick={() => this.deleteTask(item._id)}
-                    />
-                    <span style={{ paddingRight: 10 }}>Delete</span>
-                  </Card.Meta>
-                </Card.Content>
-              </Card>
-            );
-          })
-        });
-      } else {
-        this.setState({
-          items: []
-        });
-      }
-    });
+  updateTask = index => {
+    let items = JSON.parse(localStorage.getItem("items"));
+    items[index].status = true;
+    localStorage.setItem("items", JSON.stringify(items));
+    this.getTasks();
   };
 
-  updateTask = id => {
-    axios
-      .put(endpoint + "/api/task/" + id, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(res => {
-        console.log(res);
-        this.getTask();
-      });
+  undoTask = index => {
+    let items = JSON.parse(localStorage.getItem("items"));
+    items[index].status = false;
+    localStorage.setItem("items", JSON.stringify(items));
+    this.getTasks();
   };
 
-  undoTask = id => {
-    axios
-      .put(endpoint + "/api/undoTask/" + id, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(res => {
-        console.log(res);
-        this.getTask();
-      });
+  deleteTask = index => {
+    console.log("inside delete", index);
+    let items = JSON.parse(localStorage.getItem("items"));
+    items.splice(index, 1);
+    localStorage.setItem("items", JSON.stringify(items));
+    this.getTasks();
   };
 
-  deleteTask = id => {
-    axios
-      .delete(endpoint + "/api/deleteTask/" + id, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-      .then(res => {
-        console.log(res);
-        this.getTask();
-      });
-  };
   render() {
     return (
       <div>
         <div className="row">
-          <Header className="header" as="h2">
-            TO DO LIST
+          <Header
+            className="header"
+            as="a"
+            style={{
+              fontFamily: "Permanent Marker, sans-serif",
+              fontSize: "50px"
+            }}
+          >
+            <fff style={{ paddingRight: "300px" }}>
+              Get <c style={{ color: "#A9A9A9" }}>Sh</c>it Done
+            </fff>{" "}
           </Header>
+          <a
+            title="Source Code"
+            href="https://github.com/schadokar/go-to-do-app"
+            target="_blank"
+          >
+            <Icon name="code" link="true" />
+            Source Code
+          </a>
         </div>
         <div className="row">
           <Form onSubmit={this.onSubmit}>
@@ -155,7 +155,7 @@ class ToDoList extends Component {
               onChange={this.onChange}
               value={this.state.task}
               fluid
-              placeholder="Create Task"
+              placeholder="Create Shit"
             />
             {/* <Button >Create Task</Button> */}
           </Form>

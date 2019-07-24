@@ -2,12 +2,12 @@ body {
   width: 800px;
   margin: 0 auto;
   margin-top: 50px;
-
+  /* background: #f7f7f7; */
   font-family: "Open Sans", sans-serif;
 }
 
 .header {
-  text-align: center;
+  text-align: left;
 }
 
 .row {
