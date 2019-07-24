@@ -1,52 +1,51 @@
-# go-to-do-app
+# Get Shit Done
 
-This is a to-do list application.  
-**Server: Golang  
-Client: React, semantic-ui-react  
-Database: Local MongoDB**
+The application is hosted at http://getshitdone.surge.sh
 
-# Application Requirement
+It is a modification of go-to-do-app. In this application instead of using MongoDB
+for storing the data, local storage is used.
 
-### golang server requirement
+The application store data in browser's local storage.
+You can check in "Inspect" by pressing "F12" or "Ctrl+Shift+I"
 
-1. golang https://golang.org/dl/
-2. gorilla/mux library for router `go get -u github.com/gorilla/mux`
-3. mongo-driver library to connect with mongoDB `go get go.mongodb.org/mongo-driver`
-
-### react client
-
-From the Application directory
-
-`create-react-app client`
+Go to Application >> Local Storage
 
 # Start the application
 
-1. Make sure your mongoDB is started
-2. From server directory, open a terminal and run
-   `go run main.go`
-3. From client directory,  
-   a. install all the dependencies using `npm install`  
-   b. start client `npm start`
+From client directory, you have 2 options either install the complete application or just run the build:
+
+#### build
+
+a. install a server if you don't have one. `npm install -g serve`
+b. serve build
+c. Open application at http://localhost:5000
+
+#### client
+
+a. install all the dependencies using `npm install`  
+ b. start client `npm start`
+c. Open application at http://localhost:3000
 
 # Walk through the application
 
-Open application at http://localhost:3000
+The application is hosted at http://getshitdone.surge.sh
+If you just want to check it.
 
 ### Index page
 
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/index.PNG)
+<img src="./images/index.PNG" />
 
 ### Create task
 
-Enter a task and Enter
+Enter a task and Submit
 
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/createTask.PNG)
+<img src="./images/createTask.PNG" />
 
 ### Task Complete
 
 On completion of a task, click "done" Icon of the respective task card.
 
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/taskComplete.PNG)
+<img src="./images/taskComplete.PNG" />
 
 You'll notice on completion of task, card's bottom line color changed from yellow to green.
 
@@ -54,7 +53,7 @@ You'll notice on completion of task, card's bottom line color changed from yello
 
 To undone a task, click on "undo" Icon,
 
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/createTask.PNG)
+<img src="./images/createTask.PNG" />
 
 You'll notice on completion of task, card's bottom line color changed from green to yellow.
 
@@ -62,13 +61,7 @@ You'll notice on completion of task, card's bottom line color changed from green
 
 To delete a task, click on "delete" Icon.
 
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/deletetask.PNG)
-
-# References
-
-https://godoc.org/go.mongodb.org/mongo-driver/mongo  
-https://www.mongodb.com/blog/post/mongodb-go-driver-tutorial  
-https://vkt.sh/go-mongodb-driver-cookbook/    
+<img src="./images/deletetask.PNG" />
 
 # License
 

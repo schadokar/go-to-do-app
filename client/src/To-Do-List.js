@@ -140,8 +140,9 @@ class ToDoList extends Component {
           </Header>
           <a
             title="Source Code"
-            href="https://github.com/schadokar/go-to-do-app"
+            href="https://github.com/schadokar/go-to-do-app/tree/offlineToDoApp"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <Icon name="code" link="true" />
             Source Code
