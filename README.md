@@ -1,6 +1,10 @@
-# Get Shit Done
+# :memo: Go To Do App
 
-The application is hosted at http://getshitdone.surge.sh
+The offline version of application `Get Shit Done` is hosted at  
+
+:link: https://schadokar.github.io/go-to-do-app/     
+
+:link: http://getshitdone.surge.sh
 
 It is a modification of go-to-do-app. In this application instead of using MongoDB
 for storing the data, local storage is used.
@@ -10,7 +14,7 @@ You can check in "Inspect" by pressing "F12" or "Ctrl+Shift+I"
 
 Go to Application >> Local Storage
 
-# Start the application
+# :computer: Start the application
 
 From client directory, you have 2 options either install the complete application or just run the build:
 
@@ -26,7 +30,7 @@ a. install all the dependencies using `npm install`
 b. start client `npm start`  
 c. Open application at http://localhost:3000
 
-# Walk through the application
+# :panda_face: Walk through the application
 
 The application is hosted at http://getshitdone.surge.sh
 If you just want to check it.
@@ -62,6 +66,16 @@ You'll notice on completion of task, card's bottom line color changed from green
 To delete a task, click on "delete" Icon.
 
 <img src="./images/deletetask.PNG" />
+
+---
+
+# Author  
+
+#### :sun_with_face: Shubham Kumar Chadokar  
+
+I am software engineer and love to write articles and tutorials on golang, blockchain, and nodejs.  
+Please checkout my other articles on :link: https://schadokar.netlify.com :tada:
+
 
 # License
 
