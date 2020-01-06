@@ -1,6 +1,4 @@
-# go-to-do-app
-
-##### Note: Checkout its offline version at http://getshitdone.surge.sh . To check the source code, switch to offlineToDoApp branch.  
+# :memo: Go To Do App
 
 This is a to-do list application.  
 
@@ -8,7 +6,15 @@ This is a to-do list application.
 Client: React, semantic-ui-react  
 Database: Local MongoDB**
 
-# Application Requirement
+The offline version of application `Get Shit Done` is hosted at  
+
+:link: https://schadokar.github.io/go-to-do-app/     
+
+:link: http://getshitdone.surge.sh
+
+---
+
+# :pen: Application Requirement
 
 ### golang server requirement
 
@@ -22,7 +28,7 @@ From the Application directory
 
 `create-react-app client`
 
-# Start the application
+# :computer: Start the application
 
 1. Make sure your mongoDB is started
 2. From server directory, open a terminal and run
@@ -31,7 +37,7 @@ From the Application directory
    a. install all the dependencies using `npm install`  
    b. start client `npm start`
 
-# Walk through the application
+# :panda_face: Walk through the application
 
 Open application at http://localhost:3000
 
@@ -66,6 +72,15 @@ You'll notice on completion of task, card's bottom line color changed from green
 To delete a task, click on "delete" Icon.
 
 ![](https://github.com/schadokar/go-to-do-app/blob/master/images/deletetask.PNG)
+
+---
+
+# Author  
+
+#### :sun_with_face: Shubham Kumar Chadokar  
+
+I am software engineer and love to write articles and tutorials on golang, blockchain, and nodejs.  
+Please checkout my other articles on :link: https://schadokar.netlify.com :tada:
 
 # References
 
