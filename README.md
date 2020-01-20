@@ -80,7 +80,7 @@ To delete a task, click on "delete" Icon.
 #### :sun_with_face: Shubham Kumar Chadokar  
 
 I am software engineer and love to write articles and tutorials on golang, blockchain, and nodejs.  
-Please checkout my other articles on :link: https://schadokar.netlify.com :tada:
+Please checkout my other articles on :link: https://schadokar.dev :tada:
 
 # References
 
