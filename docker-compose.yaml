@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  frontend:
+    build:
+      context: client/
+      target: release
+
+  backend:
+    build:
+      context: server/
+      target: release
+  db:
+    image: mongo:4.4.1
