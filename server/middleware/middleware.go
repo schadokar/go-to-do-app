@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"../models"
 	"github.com/gorilla/mux"
@@ -18,10 +19,10 @@ import (
 
 // DB connection string
 // const connectionString = "mongodb://localhost:27017"
-const connectionString = "Connection String"
+var connectionString = os.Getenv("DB_CONNECTION")
 
 // Database Name
-const dbName = "test"
+var dbName = os.Getenv("DB_NAME")
 
 // Collection name
 const collName = "todolist"
