@@ -10,5 +10,23 @@ services:
     build:
       context: server/
       target: release
+    depends_on:
+      - db
+    ports:
+      - 8778:8080
+    environment:
+      DB_CONNECTION: mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:27017/${DB_NAME}
+      DB_NAME: ${DB_NAME}
+
   db:
-    image: mongo:4.4.1
+    image: bitnami/mongodb:4.4.1
+    volumes:
+      - db-data:/bitnami/mongodb
+    environment:
+      MONGODB_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MONGODB_DATABASE: ${DB_NAME}
+      MONGODB_USERNAME: ${DB_USER}
+      MONGODB_PASSWORD: ${DB_PASS}
+
+volumes:
+  db-data:

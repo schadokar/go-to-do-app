@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"../models"
+	"github.com/abdennour/go-to-do-app/models"
 	"github.com/gorilla/mux"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -18,7 +18,7 @@ import (
 )
 
 // DB connection string
-// const connectionString = "mongodb://localhost:27017"
+// const connectionString = "mongodb://localhost:27017/dbname"
 var connectionString = os.Getenv("DB_CONNECTION")
 
 // Database Name
