@@ -23,6 +23,8 @@ Running this app locally require only
 
 > More Details about [How to setup local k8s cluster with wildcard SSL certificate attached with the ingress](https://github.com/kubernetes-tn/guideline-kubernetes-enterprise/blob/master/general/desktop-env-setup.md)
 
+> `helm -f helmfile.ecosystem.yaml apply` might be useful
+
 # Getting Started
 
 **1. configure it**

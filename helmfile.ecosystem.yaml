@@ -1,0 +1,23 @@
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+helmDefaults:
+  tillerless: true
+  verify: false
+  wait: true
+  timeout: 200
+
+releases:
+- name: ingress
+  namespace: kube-system
+  chart: stable/nginx-ingress
+  version: 1.40.1
+  values:
+  - rbac:
+      create: true
+    # controller:
+    #   extraArgs:
+    ## Depends on your cloud-provider. However, locally, it is must
+    #     default-ssl-certificate: namespace/secret-tls-wildcard
+
+ 
