@@ -19,6 +19,11 @@ releases:
       hosts:
         - host: todo.docker.internal
           paths: ["/"]
+    replicaCount: {{ requiredEnv "FRONTEND_REPLICA_COUNT" }}
+    resources:
+      limits:
+        cpu: 300m
+        memory: 256Mi
   set:
   - name: envFile
     file: .env
@@ -37,6 +42,11 @@ releases:
       hosts:
         - host: todo-api.docker.internal
           paths: ["/"]
+    replicaCount: {{ requiredEnv "API_REPLICA_COUNT" }}
+    resources:
+      limits:
+        cpu: 300m
+        memory: 256Mi
   set:
   - name: envFile
     file: .env
@@ -66,3 +76,7 @@ releases:
       enabled: true
     containerSecurityContext:
       enabled: true
+    resources:
+      limits:
+        cpu: 300m
+        memory: 512Mi
