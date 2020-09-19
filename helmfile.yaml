@@ -24,6 +24,11 @@ releases:
       limits:
         cpu: 300m
         memory: 256Mi
+    autoscaling:
+      enabled: true
+      minReplicas: {{ requiredEnv "FRONTEND_REPLICA_COUNT" }}
+      maxReplicas: {{ requiredEnv "FRONTEND_REPLICA_COUNT" | add 3 }}
+      targetCPUUtilizationPercentage: 80
   set:
   - name: envFile
     file: .env
@@ -47,6 +52,11 @@ releases:
       limits:
         cpu: 300m
         memory: 256Mi
+    autoscaling:
+      enabled: true
+      minReplicas: {{ requiredEnv "API_REPLICA_COUNT" }}
+      maxReplicas: {{ requiredEnv "API_REPLICA_COUNT" | add 6 }}
+      targetCPUUtilizationPercentage: 80
   set:
   - name: envFile
     file: .env

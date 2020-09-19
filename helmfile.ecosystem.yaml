@@ -8,6 +8,11 @@ helmDefaults:
   timeout: 200
 
 releases:
+- name: metrics-server
+  namespace: kube-system
+  chart: stable/metrics-server
+  version: 2.11.2
+
 - name: ingress
   namespace: kube-system
   chart: stable/nginx-ingress
