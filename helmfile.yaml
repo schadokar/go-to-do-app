@@ -34,7 +34,7 @@ releases:
     file: .env
   - name: extraEnvFile
     value: |
-      REACT_APP_API_ENDPOINT=https://todo-api.docker.internal
+      REACT_APP_API_ENDPOINT=https://{{ requiredEnv "API_INGRESS_HOST" }}
 
 - name: api
   namespace: todo
