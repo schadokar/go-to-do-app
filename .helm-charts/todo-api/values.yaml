@@ -23,6 +23,12 @@ envFile:
 ## Same syntax as envFile.
 ## However it overrides if key exist in envFil
 extraEnvFile:
+
+podSecurityContext:
+  runAsUser: 1001
+  runAsNonRoot: true
+  fsGroup: 2000
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -37,16 +43,7 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
-
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
 
 service:
   type: ClusterIP
