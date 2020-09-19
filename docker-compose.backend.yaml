@@ -1,23 +1,18 @@
 version: '3.7'
 
 services:
-  frontend:
-    build:
-      context: client/
-      target: release
-
-  backend:
+  api:
     build:
       context: server/
       target: release
     depends_on:
       - db
     ports:
-      - 8778:8080
+      - 8080:8080
     environment:
       DB_CONNECTION: mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:27017/${DB_NAME}
       DB_NAME: ${DB_NAME}
-
+    image: abdennour/go-to-do-api
   db:
     image: bitnami/mongodb:4.4.1
     volumes:

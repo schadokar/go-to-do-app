@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  frontend:
+    build:
+      context: client/
+      target: release
+    depends_on:
+      - frontend-sidecar-env-gen
+    ports:
+    - 8081:80
+    env_file:
+    - .env
+    volumes:
+    - env-js:/opt/app/config:ro
+    image: abdennour/go-to-do-frontend
+  # in k8s, it will be easier using sidecar with emptyDir vol
+  frontend-sidecar-env-gen:
+    image: abdennour/dotenv-to-js-object:4ea
+    working_dir: /data
+    volumes:
+    - env-js:/data 
+    healthcheck:
+      # healthy when env.js file is not empty
+      test: ["CMD", "test", "-s", "/data/env.js"]
+      timeout: 1s
+      start_period: 1s
+      interval: 10s
+      retries: 3
+    env_file:
+    - .env
+    command: ->
+      --env-vars-filter=REACT_APP_
+      --run-as=daemon
+      --refresh-period=50
+
+volumes:
+  env-js:
