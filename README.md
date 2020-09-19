@@ -9,10 +9,16 @@ This a 3 tier **To-Do List** application,  where:
 # Prerequisites 
 
 Running this app locally require only
-
+**with docker-compose**
 - Docker (v19.03 or later)
 - Docker Compose (v1.25.5 or later)
 - Host Ports 8080 and 8081 must not be busy.
+
+**OR with helmfile**
+- Docker (v19.03 or later)
+- Helm (v3.3.3 or later)
+- Helmfile (v0.129.3 or later)
+- More Details about [How to setup local k8s cluster with wildcard SSL certificate attached with the ingress](https://github.com/kubernetes-tn/guideline-kubernetes-enterprise/blob/master/general/desktop-env-setup.md)
 
 # Getting Started
 
