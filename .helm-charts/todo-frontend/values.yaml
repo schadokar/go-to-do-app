@@ -11,6 +11,23 @@ image:
   tag: ""
 
 imagePullSecrets: []
+## Content of .env file.
+## The chart is smart enough to process .env file content
+## then render it either as configmap data or secret data
+## .i.e :
+# envFile: |
+#   DB_CONNECTION=mongo://db/name
+envFile:
+
+## Same syntax as envFile.
+## However it overrides if key exist in envFil
+extraEnvFile:
+
+
+securityContext:
+  runAsUser: 1001
+  runAsNonRoot: true
+
 nameOverride: ""
 fullnameOverride: ""
 
@@ -26,15 +43,6 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
 
 service:
   type: ClusterIP

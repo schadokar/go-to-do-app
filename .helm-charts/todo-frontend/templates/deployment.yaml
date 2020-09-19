@@ -13,8 +13,9 @@ spec:
       {{- include "todo-frontend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-    {{- with .Values.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+    {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
@@ -27,6 +28,19 @@ spec:
       serviceAccountName: {{ include "todo-frontend.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: env-generator
+          image: abdennour/dotenv-to-js-object:4ea
+          args:
+          - --dest=/data
+          - --env-vars-filter=REACT_APP_
+          - --run-as=job
+          volumeMounts:
+          - name: data-env
+            mountPath: /data
+          envFrom:
+            - secretRef:
+                name: {{ include "todo-frontend.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -35,7 +49,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -47,6 +61,12 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data-env
+              mountPath: /opt/app/config
+      volumes:
+        - name: data-env
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

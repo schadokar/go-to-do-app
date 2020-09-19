@@ -8,6 +8,24 @@ helmDefaults:
   timeout: 200
 
 releases:
+- name: frontend
+  namespace: todo
+  chart: .helm-charts/todo-frontend
+  values:
+  - ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts:
+        - host: todo.docker.internal
+          paths: ["/"]
+  set:
+  - name: envFile
+    file: .env
+  - name: extraEnvFile
+    value: |
+      REACT_APP_API_ENDPOINT=https://todo-api.docker.internal
+
 - name: api
   namespace: todo
   chart: .helm-charts/todo-api
