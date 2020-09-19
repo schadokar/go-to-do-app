@@ -9,13 +9,12 @@ This a 3 tier **To-Do List** application,  where:
 
 # Prerequisites 
 
-Running this app locally require only
-
-**with docker-compose**
+Running this app locally require :
+- Make (3.81 or later)
 - Docker (v19.03 or later)
 - Docker Compose (v1.25.5 or later)
 
-**OR with helmfile** adding the following alongside with requirements above:
+**For kubernetes run** you need also : 
 
 - Helm (v3.3.3 or later)
 - Helmfile (v0.129.3 or later)
@@ -32,7 +31,7 @@ Running this app locally require only
 - generate .env file `cp .env.example .env`
 - populate env vars `export $(cat .env| xargs)`
 
-**2.a. start it with docker-compose** run `docker-compose up -d`
+**2.a. start it with docker-compose** run `docker-compose up -d` or `make up`
 then navigate to http://localhost:8081 
 or interact directly with API thru localhost:8080 endpoint
 
@@ -40,13 +39,13 @@ ALTERNATIVELY
 
 **2.b. start it with helmfile**
 
-- built images `docker-compose build`
-- Run it on k8s `helmfile apply`
+- built images `make`
+- Run it on kubernetes `make k8s.up`
 
 then navigate to https://todo.docker.internal
 or interact directly with API thru https://todo-api.docker.internal endpoint
 
-
+> If you don't have ingress in the cluster, we recommend running `make k8s.up.ecosystem` after visiting [helmfile.ecosystem.yaml](helmfile.ecosystem.yaml) file.
 
 # Contribution
 
