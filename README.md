@@ -1,92 +1,37 @@
-# :memo: Go To Do App
+# Go To Do App
 
-This is a to-do list application. The complete tutorial is published on [my blog](https://schadokar.dev/posts/build-a-todo-app-in-golang-mongodb-and-react/).  
+This a 3 tier **To-Do List** application,  where: 
 
-**Server: Golang  
-Client: React, semantic-ui-react  
-Database: Local MongoDB**
+- Data tier is NoSQL with mongo
+- API tier is Golang (exposed to the host on port 8080)
+- Frontend tier is React (exposed to the host on port 8081)
 
-The offline version of application `Get Shit Done` is hosted at  
+# Prerequisites 
 
-:link: https://schadokar.github.io/go-to-do-app/     
+Running this app locally require only
 
-:link: http://getshitdone.surge.sh
+- Docker (v19.03 or later)
+- Docker Compose (v1.25.5 or later)
+- Host Ports 8080 and 8081 must not be busy.
 
----
+# Getting Started
 
-# :pen: Application Requirement
+**configure it**
 
-### golang server requirement
+- generate .env file `cp .env.example .env`
+- populate env vars `export $(cat .env| xargs)`
 
-1. golang https://golang.org/dl/
-2. gorilla/mux library for router `go get -u github.com/gorilla/mux`
-3. mongo-driver library to connect with mongoDB `go get go.mongodb.org/mongo-driver`
+**start it** run `docker-compose up -d`
+then navigate to http://localhost:8081 
+or interact directly with API thru localhost:8080 endpoint
 
-### react client
+# Contribution
 
-From the Application directory
+Guide for Contribution is [here](./CONTRIBUTING.md).
+# Authors 
 
-`create-react-app client`
-
-# :computer: Start the application
-
-1. Make sure your mongoDB is started
-2. From server directory, open a terminal and run
-   `go run main.go`
-3. From client directory,  
-   a. install all the dependencies using `npm install`  
-   b. start client `npm start`
-
-# :panda_face: Walk through the application
-
-Open application at http://localhost:3000
-
-### Index page
-
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/index.PNG)
-
-### Create task
-
-Enter a task and Enter
-
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/createTask.PNG)
-
-### Task Complete
-
-On completion of a task, click "done" Icon of the respective task card.
-
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/taskComplete.PNG)
-
-You'll notice on completion of task, card's bottom line color changed from yellow to green.
-
-### Undo a task
-
-To undone a task, click on "undo" Icon,
-
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/createTask.PNG)
-
-You'll notice on completion of task, card's bottom line color changed from green to yellow.
-
-### Delete a task
-
-To delete a task, click on "delete" Icon.
-
-![](https://github.com/schadokar/go-to-do-app/blob/master/images/deletetask.PNG)
-
----
-
-# Author  
-
-#### :sun_with_face: Shubham Kumar Chadokar  
-
-I am software engineer and love to write articles and tutorials on golang, blockchain, and nodejs.  
-Please checkout my other articles on :link: https://schadokar.dev :tada:
-
-# References
-
-https://godoc.org/go.mongodb.org/mongo-driver/mongo  
-https://www.mongodb.com/blog/post/mongodb-go-driver-tutorial  
-https://vkt.sh/go-mongodb-driver-cookbook/    
+- Shubham Kumar Chadokar <https://schadokar.dev> - Software Owner & Initiator
+- Abdennour Toumi <http://kubernetes.tn> - Adding Cloud-native aspect on the software (docker, helm, kubernetes) 
 
 # License
 
