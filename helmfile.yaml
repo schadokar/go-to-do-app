@@ -17,7 +17,7 @@ releases:
       annotations:
         kubernetes.io/ingress.class: nginx
       hosts:
-        - host: todo.docker.internal
+        - host: {{ requiredEnv "FRONTEND_INGRESS_HOST" }}
           paths: ["/"]
     replicaCount: {{ requiredEnv "FRONTEND_REPLICA_COUNT" }}
     resources:
@@ -45,7 +45,7 @@ releases:
       annotations:
         kubernetes.io/ingress.class: nginx
       hosts:
-        - host: todo-api.docker.internal
+        - host: {{ requiredEnv "API_INGRESS_HOST" }}
           paths: ["/"]
     replicaCount: {{ requiredEnv "API_REPLICA_COUNT" }}
     resources:
