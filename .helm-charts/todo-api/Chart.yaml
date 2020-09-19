@@ -1,6 +1,8 @@
 apiVersion: v2
 name: todo-api
-description: A Helm chart for Kubernetes
+description: |
+  k8s resources to deploy API part of a TODO app
+  based on Golang and Mongodb
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -21,3 +23,7 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 appVersion: rc
+
+maintainers:
+- name: abdennour
+  email: ceo@kubernetes.tn
