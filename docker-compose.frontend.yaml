@@ -13,7 +13,7 @@ services:
     - .env
     volumes:
     - env-js:/opt/app/config:ro
-    image: abdennour/go-to-do-frontend
+    image: abdennour/go-to-do-frontend:rc
   # in k8s, it will be easier using sidecar with emptyDir vol
   frontend-sidecar-env-gen:
     image: abdennour/dotenv-to-js-object:4ea

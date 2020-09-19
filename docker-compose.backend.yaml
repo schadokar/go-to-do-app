@@ -12,9 +12,9 @@ services:
     environment:
       DB_CONNECTION: mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:27017/${DB_NAME}
       DB_NAME: ${DB_NAME}
-    image: abdennour/go-to-do-api
+    image: abdennour/go-to-do-api:rc
   db:
-    image: bitnami/mongodb:4.4.1
+    image: bitnami/mongodb:${DB_IMAGE_TAG}
     volumes:
       - db-data:/bitnami/mongodb
     environment:

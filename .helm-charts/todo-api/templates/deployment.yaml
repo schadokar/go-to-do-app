@@ -35,15 +35,18 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: {{ include "todo-api.fullname" . }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /api/task
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /api/task
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

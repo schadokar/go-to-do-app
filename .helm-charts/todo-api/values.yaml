@@ -5,12 +5,24 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: abdennour/go-to-do-api
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
 imagePullSecrets: []
+
+## Content of .env file.
+## The chart is smart enough to process .env file content
+## then render it either as configmap data or secret data
+## .i.e :
+# envFile: |
+#   DB_CONNECTION=mongo://db/name
+envFile:
+
+## Same syntax as envFile.
+## However it overrides if key exist in envFil
+extraEnvFile:
 nameOverride: ""
 fullnameOverride: ""
 
@@ -46,7 +58,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: chart-example.local
+    - host: api.docker.internal
       paths: []
   tls: []
   #  - secretName: chart-example-tls

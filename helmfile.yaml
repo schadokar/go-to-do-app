@@ -1,0 +1,50 @@
+repositories:
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+helmDefaults:
+  tillerless: true
+  verify: false
+  wait: true
+  timeout: 200
+
+releases:
+- name: api
+  namespace: todo
+  chart: .helm-charts/todo-api
+  values:
+  - ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      hosts:
+        - host: todo-api.docker.internal
+          paths: ["/"]
+  set:
+  - name: envFile
+    file: .env
+  - name: extraEnvFile
+    value: |
+      DB_CONNECTION=mongodb://{{ requiredEnv "DB_USER" }}:{{ requiredEnv "DB_PASS" }}@db-mongodb:27017/{{ requiredEnv "DB_NAME" }}
+# docs: https://github.com/bitnami/charts/blob/master/bitnami/mongodb/values.yaml
+- name: db
+  namespace: todo
+  chart: bitnami/mongodb
+  version: 9.1.2
+  values:
+  - image:
+      tag: {{ requiredEnv "DB_IMAGE_TAG" | quote }} 
+    replicaCount: {{ requiredEnv "DB_REPLICA_COUNT" }} 
+    auth:
+      enabled: true
+      rootPassword: {{ requiredEnv "DB_ROOT_PASS" | quote }}
+      username: {{ requiredEnv "DB_USER" }}
+      password: {{ requiredEnv "DB_PASS" | quote }}
+      database: {{ requiredEnv "DB_NAME" }}
+    persistence:
+      enabled: true
+      # storageClass: "-"
+      size: {{ requiredEnv "DB_STORAGE_SIZE" }}
+    podSecurityContext:
+      enabled: true
+    containerSecurityContext:
+      enabled: true
