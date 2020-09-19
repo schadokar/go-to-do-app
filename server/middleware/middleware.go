@@ -127,6 +127,11 @@ func DeleteAllTask(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// GetHealth of the app - useful for probes
+func GetHealth(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
 // get all task from the DB and return it
 func getAllTask() []primitive.M {
 	cur, err := collection.Find(context.Background(), bson.D{{}})

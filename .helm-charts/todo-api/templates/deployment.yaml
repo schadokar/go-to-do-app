@@ -43,7 +43,7 @@ spec:
                 name: {{ include "todo-api.fullname" . }}
           livenessProbe:
             httpGet:
-              path: /api/task
+              path: /healthz
               port: http
           readinessProbe:
             httpGet:
