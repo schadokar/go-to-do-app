@@ -10,7 +10,7 @@ class ToDoList extends Component {
 
     this.state = {
       task: "",
-      items: []
+      items: [],
     };
   }
 
@@ -18,9 +18,9 @@ class ToDoList extends Component {
     this.getTask();
   }
 
-  onChange = event => {
+  onChange = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -32,18 +32,18 @@ class ToDoList extends Component {
         .post(
           endpoint + "/api/task",
           {
-            task
+            task,
           },
           {
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
           }
         )
-        .then(res => {
+        .then((res) => {
           this.getTask();
           this.setState({
-            task: ""
+            task: "",
           });
           console.log(res);
         });
@@ -51,21 +51,25 @@ class ToDoList extends Component {
   };
 
   getTask = () => {
-    axios.get(endpoint + "/api/task").then(res => {
-      console.log(res);
+    axios.get(endpoint + "/api/task").then((res) => {
       if (res.data) {
         this.setState({
-          items: res.data.map(item => {
+          items: res.data.map((item) => {
             let color = "yellow";
+            let style = {
+              wordWrap: "break-word",
+            };
 
             if (item.status) {
               color = "green";
+              style["textDecorationLine"] = "line-through";
             }
+
             return (
               <Card key={item._id} color={color} fluid>
                 <Card.Content>
                   <Card.Header textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.task}</div>
+                    <div style={style}>{item.task}</div>
                   </Card.Header>
 
                   <Card.Meta textAlign="right">
@@ -91,54 +95,55 @@ class ToDoList extends Component {
                 </Card.Content>
               </Card>
             );
-          })
+          }),
         });
       } else {
         this.setState({
-          items: []
+          items: [],
         });
       }
     });
   };
 
-  updateTask = id => {
+  updateTask = (id) => {
     axios
       .put(endpoint + "/api/task/" + id, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.getTask();
       });
   };
 
-  undoTask = id => {
+  undoTask = (id) => {
     axios
       .put(endpoint + "/api/undoTask/" + id, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.getTask();
       });
   };
 
-  deleteTask = id => {
+  deleteTask = (id) => {
     axios
       .delete(endpoint + "/api/deleteTask/" + id, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.getTask();
       });
   };
+
   render() {
     return (
       <div>
