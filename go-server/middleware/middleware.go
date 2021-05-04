@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"go-server/models"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -101,7 +100,6 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 	var task models.ToDoList
 	_ = json.NewDecoder(r.Body).Decode(&task)
 
-	logger.Info("DELETE ME", zap.Any("obj", task), zap.Any("String", string(cont)))
 	insertOneTask(task)
 	json.NewEncoder(w).Encode(task)
 }
