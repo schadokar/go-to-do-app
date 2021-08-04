@@ -12,6 +12,7 @@ The offline version of application `Get Shit Done` is hosted at
 
 :link: http://getshitdone.surge.sh
 
+> Offline to-do app instruction. [here](https://codesource.io/building-an-offline-to-do-app-with-react/)
 ---
 
 # Highlights
