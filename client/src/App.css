@@ -1,9 +1,15 @@
+@import url('http://fonts.cdnfonts.com/css/montserrat');
+*{
+  font-family: 'Montserrat', sans-serif;
+}
+
 body {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   margin-top: 50px;
+  background-color:rgb(96, 204, 231);
+  font-family: 'Montserrat', sans-serif!important;
 
-  font-family: "Open Sans", sans-serif;
 }
 
 .header {
@@ -12,4 +18,17 @@ body {
 
 .row {
   padding-bottom: 50px;
+}
+
+.h1,h2,h3,h4,h5{
+  font-family: 'Montserrat', sans-serif!important;
+}
+h2.ui.header{
+  font-family: 'Montserrat', sans-serif!important;
+}
+button.ui.button{
+  font-family: 'Montserrat', sans-serif!important;
+}
+span{
+  font-family: 'Montserrat', sans-serif!important;
 }
