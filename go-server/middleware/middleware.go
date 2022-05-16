@@ -39,13 +39,13 @@ func loadTheEnv() {
 func createDBInstance() {
 	// DB connection string
 	connectionString := os.Getenv("DB_URI")
-	
+
 	// Database Name
 	dbName := os.Getenv("DB_NAME")
 
 	// Collection name
 	collName := os.Getenv("DB_COLLECTION_NAME")
-	
+
 	// Set client options
 	clientOptions := options.Client().ApplyURI(connectionString)
 
@@ -74,8 +74,32 @@ func createDBInstance() {
 func GetAllTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	payload := getAllTask()
 	json.NewEncoder(w).Encode(payload)
+}
+
+// GetAllTaskSearch get all the task route with filter
+func GetAllTaskSearch(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	params := mux.Vars(r)
+	if params["task"] != "" {
+		payload := getAllTaskSearch(params["task"])
+		fmt.Println("my task", params["task"])
+		json.NewEncoder(w).Encode(payload)
+	} else {
+		payload := getAllTask()
+		fmt.Println("my task", params["task"])
+		json.NewEncoder(w).Encode(payload)
+	}
+
+	// payload := getAllTaskSearch(task)
+	// json.NewEncoder(w).Encode(payload)
 }
 
 // CreateTask create task route
@@ -113,7 +137,7 @@ func UndoTask(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	params := mux.Vars(r)
-	undoTask(params["id"])
+	undoTask(params["id"], params["status"])
 	json.NewEncoder(w).Encode(params["id"])
 }
 
@@ -167,6 +191,38 @@ func getAllTask() []primitive.M {
 	return results
 }
 
+// get all task from the DB and return it
+func getAllTaskSearch(task string) []primitive.M {
+
+	cur, err := collection.Find(context.Background(), bson.M{"task": task})
+	// cur, err := collection.Find(context.Background(), bson.M{"$regex": primitive.Regex{
+	// 	Pattern: "^" + task,
+	// 	Options: "g",
+	// }})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var results []primitive.M
+	for cur.Next(context.Background()) {
+		var result bson.M
+		e := cur.Decode(&result)
+		if e != nil {
+			log.Fatal(e)
+		}
+		// fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
+		results = append(results, result)
+	}
+
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	cur.Close(context.Background())
+	return results
+}
+
 // Insert one task in the DB
 func insertOneTask(task models.ToDoList) {
 	insertResult, err := collection.InsertOne(context.Background(), task)
@@ -174,8 +230,9 @@ func insertOneTask(task models.ToDoList) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println("Inserted a Single Record ", insertResult.InsertedID)
+	fmt.Println("Inserted a Single Record ", insertResult.InsertedID.(primitive.ObjectID).Hex())
+	id := insertResult.InsertedID.(primitive.ObjectID).Hex()
+	undoTask(id, "A faire")
 }
 
 // task complete method, update task's status to true
@@ -183,7 +240,7 @@ func taskComplete(task string) {
 	fmt.Println(task)
 	id, _ := primitive.ObjectIDFromHex(task)
 	filter := bson.M{"_id": id}
-	update := bson.M{"$set": bson.M{"status": true}}
+	update := bson.M{"$set": bson.M{"status": "Fait"}}
 	result, err := collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		log.Fatal(err)
@@ -193,11 +250,12 @@ func taskComplete(task string) {
 }
 
 // task undo method, update task's status to false
-func undoTask(task string) {
+func undoTask(task string, status string) {
 	fmt.Println(task)
+	fmt.Println(status)
 	id, _ := primitive.ObjectIDFromHex(task)
 	filter := bson.M{"_id": id}
-	update := bson.M{"$set": bson.M{"status": false}}
+	update := bson.M{"$set": bson.M{"status": status}}
 	result, err := collection.UpdateOne(context.Background(), filter, update)
 	if err != nil {
 		log.Fatal(err)
