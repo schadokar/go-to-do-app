@@ -9,7 +9,7 @@
     "axios": "^0.21.4",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-scripts": "3.3.0",
+    "react-scripts": "5.0.1",
     "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
